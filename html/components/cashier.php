@@ -126,7 +126,7 @@ header("Expires: 0");
     // Function to update the price based on the selected size
     function updatePrice(size) {
         selectedSize = size;
-        const priceElement = document.querySelector(`input[name="size"][value="${size}"]`);
+        const priceElement = document.querySelector(`input[name="size"][value=${size}]`);
         const price = parseFloat(priceElement.getAttribute(`data-${size}-price`));
 
         if (!isNaN(price)) {

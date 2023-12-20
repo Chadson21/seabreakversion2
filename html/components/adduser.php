@@ -11,7 +11,7 @@
 
         $addquery = "INSERT INTO `users` (`users_id`, `emp_name`, `username`, `password`, `user_type`) VALUES (NULL, '$name', '$username', '$password', '$usertype')";
         $query = mysqli_query($con, $addquery) or die (mysqli_error($con));
-        header("location: dashboard.php");
+        header("location: admin.php");
   }
 
     

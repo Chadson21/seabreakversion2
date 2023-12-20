@@ -215,8 +215,8 @@ error_reporting(E_ALL ^ E_NOTICE);
         <td>
         <form action="delete.php" method="POST">
         <input type="hidden" name= "users_id" value="<?php echo $fetch['users_id'];?>">
-                <button class="btn btn-sm btn-primary" type="submit" name="delete"> Delete
-                <span class="fas fa-trash" style="color: #bd1c00">
+                <button class="btn btn-sm btn-danger" type="submit" name="delete" onclick="return confirm('Are you sure you want to delete this item?');"> Delete
+                    <span class="fas fa-trash" style="color: #bd1c00">
                 </button>
         </td>
         </form>

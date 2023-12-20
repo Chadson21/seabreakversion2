@@ -55,6 +55,8 @@ error_reporting(E_ALL ^ E_NOTICE);
 <link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon/favicon-16x16.png">
 <link rel="manifest" href="../../assets/img/favicon/site.webmanifest">
 <link rel="mask-icon" href="../../assets/img/favicon/safari-pinned-tab.svg" color="#ffffff">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="theme-color" content="#ffffff">
 
@@ -423,42 +425,18 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 
 
-                    <div class="tab-pane fade" id="tab-16" role="tabpanel" aria-labelledby="tab-16">
-                    <div class="container-fluid">
-        <table id="ordersTable" class="table shadow-soft rounded mt-30 mb-0">
-            <thead>
-                <tr>
-                    <th scope="col">Transaction Number</th>
-                    <th scope="col">Employee</th>
-                    <th scope="col">Table Number</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Money Paid</th>
-                    <th scope="col">Change</th>
-                    <th scope="col">Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $query = mysqli_query($con, "SELECT transaction_number, emp_name, table_number, SUM(price), money_paid, customer_change, order_date FROM orders GROUP BY transaction_number ORDER BY orders_id DESC;
-                ") or die(mysqli_error());
-                while($fetch = mysqli_fetch_array($query)){
-                    $user = $fetch['orders_id'];
-                ?>
-                <tr>
-                    <td><?php echo $fetch['transaction_number']?></td>
-                    <td><?php echo $fetch['emp_name']?></td>
-                    <td><?php echo $fetch['table_number']?></td>
-                    <td><?php echo $fetch['SUM(price)']?></td>
-                    <td><?php echo $fetch['money_paid']?></td>
-                    <td><?php echo $fetch['customer_change']?></td>
-                    <td><?php echo $fetch['order_date']?></td>
-                  
-                </tr>
-                <?php
-                }
-                ?>
-            </tbody>
-        </table>
+     <div class="tab-pane fade" id="tab-16" role="tabpanel" aria-labelledby="tab-16">
+     <div class="container-fluid">
+        <h2>Sales Data</h2>
+
+        <label for="period"class="form-label">Select period:</label>
+        <select id="period">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+        </select>
+
+       <div id="tableContainer"></div>
         
         <!-- Pagination buttons -->
         <div id="pagination-container" class="mt-3">
@@ -466,6 +444,41 @@ error_reporting(E_ALL ^ E_NOTICE);
             <button class="btn btn-primary" onclick="changePage(1)">Next</button>
         </div>
     </div>
+
+    <!-- TRIAL Jquery for display table -->
+    <script>
+        $(document).ready(function () {
+           
+            updateTable();
+
+            // Attach the updateTable function to the change event of the dropdown
+            $('#period').change(updateTable);
+        function updateTable() {
+        var selectedPeriod = $('#period').val();
+
+            // Use jQuery to make an AJAX request to fetch data
+            $.ajax({
+                url: 'get_sales_data.php',
+                method: 'GET',
+                data: { period: selectedPeriod },
+                dataType: 'json',
+                success: function(response) {
+                    // Insert the HTML table into the specified container
+                    $('#tableContainer').html(response.tableHTML);
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+            }
+
+            // Initial table update
+            
+            // }
+
+        });
+    </script>
+<!-- END TRIAL Jquery for display table -->
 
     <script>
         var currentPage = 1;
